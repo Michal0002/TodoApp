@@ -29,5 +29,18 @@ namespace Todo.Controllers
             }
             return View(task);
         }
+
+        public IActionResult Edit(int id)
+        {
+            TaskModel foundItem = taskDAO.GetElementById(id);
+            return View("ShowEdit", foundItem);
+        }
+
+        public IActionResult ShowEdit(TaskModel task)
+        {
+            taskDAO.Update(task);
+            return View("Index", taskDAO.GetAllTasks());
+        }
+
     }
 }

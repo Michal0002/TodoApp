@@ -96,5 +96,39 @@ namespace Todo.Services
             }
             return model;
         }
+
+        public TaskModel Update(TaskModel model)
+        {
+            string sqlStatement = "UPDATE dbo.Tasks SET Title = @Title, Description = @Description, CreatedDate = @CreatedDate, DueDate = @DueDate, Status = @Status, Priority = @Priority WHERE Id = @Id;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@Title", model.Title);
+                command.Parameters.AddWithValue("@Description", model.Description);
+                command.Parameters.AddWithValue("@CreatedDate", model.CreatedDate);
+                command.Parameters.AddWithValue("@DueDate", model.DueDate);
+                command.Parameters.AddWithValue("@Status", model.Status);
+                command.Parameters.AddWithValue("@Priority", model.Priority);
+                command.Parameters.AddWithValue("@Id", model.Id); 
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            return model;
+        }
+
     }
 }
