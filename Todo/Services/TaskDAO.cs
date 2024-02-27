@@ -156,6 +156,40 @@ namespace Todo.Services
             }
         }
 
+            public (int, List<TaskModel>) GetTodaysTasks()
+            {
+                List<TaskModel> todaysTasks = new List<TaskModel>();
+                int tasksCount = 0;
 
-    }
+                string sqlStatement = "SELECT * FROM Tasks WHERE CONVERT(DATE, DueDate) = CONVERT(DATE, GETDATE())";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(sqlStatement, connection);
+
+                    try
+                    {
+                        connection.Open();
+
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            TaskModel task = new TaskModel()
+                            {Id = (int)reader[0],Title = (string)reader[1],Description = (string)reader[2],CreatedDate = (DateTime)reader[3],DueDate = (DateTime)reader[4],Status = (string)reader[5],Priority = (string)reader[6]};
+
+                            todaysTasks.Add(task);
+                        }
+
+                        tasksCount = todaysTasks.Count;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+
+                return (tasksCount, todaysTasks);
+            }
+        }
 }

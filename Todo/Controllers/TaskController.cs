@@ -24,7 +24,7 @@ namespace Todo.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Wystąpił błąd podczas tworzenia zadania.");
+                    ModelState.AddModelError("", "Something went wrong.");
                 }
             }
             return View(task);
@@ -51,6 +51,11 @@ namespace Todo.Controllers
         {
             taskDAO.Delete(id);
             return View("Index", taskDAO.GetAllTasks());
+        }
+
+        public IActionResult Main ()
+        {
+            return View(taskDAO.GetTodaysTasks());
         }
     }
 }
