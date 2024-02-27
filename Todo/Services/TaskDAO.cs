@@ -1,5 +1,5 @@
-﻿using Todo.Models;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
+using Todo.Models;
 
 namespace Todo.Services
 {
@@ -129,6 +129,33 @@ namespace Todo.Services
             }
             return model;
         }
+
+        public void Delete(int id)
+        {
+            string sqlStatement = "DELETE FROM dbo.Tasks WHERE Id = @Id;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@Id", id);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("SQL Error: " + ex.Message);
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
 
     }
 }

@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Todo",
+    "\\Todo\\Controllers"
   ],
   "SelectedNode": "\\Todo.sln",
   "PreviewInSolutionExplorer": false

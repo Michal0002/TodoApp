@@ -42,5 +42,15 @@ namespace Todo.Controllers
             return View("Index", taskDAO.GetAllTasks());
         }
 
+        public IActionResult Details(int id)
+        {
+            TaskModel foundItem = taskDAO.GetElementById(id);
+            return View(foundItem);
+        }
+        public IActionResult Delete(int id)
+        {
+            taskDAO.Delete(id);
+            return View("Index", taskDAO.GetAllTasks());
+        }
     }
 }
